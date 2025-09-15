@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron"
+import { app, BrowserWindow, ipcMain, WebContents } from "electron"
 
 import url from 'url'
 
@@ -38,9 +38,13 @@ const createWindowA = () => {
 
     })
 
+    ipcMain.on('apiA:sendToB', async (event, input: string) => {
+        BrowserWindow.getAllWindows().forEach(window => {
+            window.webContents.send('apiB:onMessage', input)
+        })
 
-
-    //mainWindow.loadURL("http://localhost:5173")
+        return 'hhhh sent'
+    })
 
     //VITE_DEV_SERVER_URL 是开发服务器的 url, 只在开发环境中存在
 
@@ -72,17 +76,19 @@ const createWindowB = () => {
 
     })
 
+    ipcMain.handle('apiB:sendToA', async (event, input: string) => {
+        BrowserWindow.getAllWindows().forEach(window => {
+            window.webContents.send('apiA:onMessage', input)
+        })
 
+        return 'hhhh sent'
+    })
 
-    //mainWindow.loadURL("http://localhost:5173")
 
     //VITE_DEV_SERVER_URL 是开发服务器的 url, 只在开发环境中存在
 
     mainWindow.loadURL(`${process.env['VITE_DEV_SERVER_URL']}/#/windowB`)
-
 }
-
-
 
 //当应用准备就绪后创建窗口
 

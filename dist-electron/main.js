@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import url from "url";
 import path from "path";
 let __filename = url.fileURLToPath(import.meta.url);
@@ -23,6 +23,12 @@ const createWindowA = () => {
       //预加载脚本
     }
   });
+  ipcMain.on("apiA:sendToB", async (event, input) => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send("apiB:onMessage", input);
+    });
+    return "hhhh sent";
+  });
   mainWindow.loadURL(`${process.env["VITE_DEV_SERVER_URL"]}/#/windowA`);
 };
 const createWindowB = () => {
@@ -44,6 +50,12 @@ const createWindowB = () => {
       preload: path.resolve(__dirname, "preloadB.mjs")
       //预加载脚本
     }
+  });
+  ipcMain.handle("apiB:sendToA", async (event, input) => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send("apiA:onMessage", input);
+    });
+    return "hhhh sent";
   });
   mainWindow.loadURL(`${process.env["VITE_DEV_SERVER_URL"]}/#/windowB`);
 };

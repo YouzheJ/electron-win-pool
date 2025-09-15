@@ -7,10 +7,22 @@ export default defineConfig({
    vue(),
    electron({   //开始添加起
      main: {
-       entry: 'electron/main.js',
+       entry: 'electron/main.ts',
      },
      preload: {
-       input: 'electron/preload.js',
+       input: {
+         preloadA: 'electron/preloadA.ts',
+         preloadB: 'electron/preloadB.ts',
+       },
+       vite: {
+         build: {
+           rollupOptions: {
+             output: {
+               inlineDynamicImports: false,
+             },
+           },
+         },
+       },
      },
    }),
  ],  //开始添加结束
