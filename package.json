@@ -1,9 +1,9 @@
 {
-  "name": "electron-win-pool",
+  "name": "electron-ipc",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "dist-electron/main.js", 
+  "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
@@ -16,11 +16,12 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.7.0",
-    "electron-fix": "^1.1.6",
     "electron": "^38.0.0",
+    "electron-fix": "^1.1.6",
     "typescript": "~5.8.3",
     "vite": "^7.1.2",
     "vite-plugin-electron": "^0.29.0",
+    "vue-router": "^4.5.1",
     "vue-tsc": "^3.0.5"
   }
 }
