@@ -1,7 +1,8 @@
 "use strict";
 const electron = require("electron");
 electron.contextBridge.exposeInMainWorld("apiB", {
-  ping: (input) => electron.ipcRenderer.invoke("apiB:sendToA", input),
+  send: (input) => electron.ipcRenderer.invoke("apiB:sendToA", input),
+  normalSend: (input) => electron.ipcRenderer.invoke("apiB:normalSendToA", input),
   onMessage: (callback) => {
     electron.ipcRenderer.on("apiB:onMessage", callback);
   }

@@ -24,6 +24,9 @@ const createWindowA = () => {
     }
   });
   ipcMain.on("apiA:sendToB", async (event, input) => {
+    if (input.includes("error")) {
+      throw new Error("test error");
+    }
     BrowserWindow.getAllWindows().forEach((window) => {
       window.webContents.send("apiB:onMessage", input);
     });
@@ -52,6 +55,18 @@ const createWindowB = () => {
     }
   });
   ipcMain.handle("apiB:sendToA", async (event, input) => {
+    if (input.includes("error")) {
+      throw new Error("test error");
+    }
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send("apiA:onMessage", input);
+    });
+    return "hhhh sent";
+  });
+  ipcMain.handle("apiB:normalSendToA", (event, input) => {
+    if (input.includes("error")) {
+      throw new Error("test error");
+    }
     BrowserWindow.getAllWindows().forEach((window) => {
       window.webContents.send("apiA:onMessage", input);
     });

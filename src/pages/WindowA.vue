@@ -8,16 +8,17 @@ const input = ref('')
 async function onPing() {
   try {
     await apiA?.ping?.(input.value)
-    alert('WindowA pinged main via apiA')
+    alert(`send: ${input.value}`)
   } catch (e) {
     console.error(e)
+    alert(e)
   }
 }
 
 
 onMounted(() => {
   apiA.onMessage((event, input) => {
-    alert('WindowA received message from WindowB: ' + input)
+    alert('on message from WindowB: ' + input)
   })
 })
 </script>
@@ -26,7 +27,7 @@ onMounted(() => {
   <div>
     <h1>Window A</h1>
     <input type="text" v-model="input" />
-    <button @click="onPing">Ping Main (apiA)</button>
+    <button @click="onPing">send to B</button>
   </div>
   
 </template>
